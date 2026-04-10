@@ -46,9 +46,9 @@ else
 fi
 
 # 6. Merge hooks into settings.json
-HOOKS_BASH=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('true' if c.get('hooks',{}).get('bash',True) else 'false')")
-HOOKS_AGENT=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('true' if c.get('hooks',{}).get('agent',True) else 'false')")
-HOOKS_MCP=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('true' if c.get('hooks',{}).get('mcp',True) else 'false')")
+HOOKS_BASH=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('True' if c.get('hooks',{}).get('bash',True) else 'False')")
+HOOKS_AGENT=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('True' if c.get('hooks',{}).get('agent',True) else 'False')")
+HOOKS_MCP=$(/usr/bin/python3 -c "import json; c=json.load(open('$CONFIG_FILE')); print('True' if c.get('hooks',{}).get('mcp',True) else 'False')")
 
 /usr/bin/python3 <<PYEOF
 import json, os
