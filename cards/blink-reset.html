@@ -303,6 +303,13 @@
     color: var(--primary-container);
     letter-spacing: 0.03em;
   }
+
+  .goodbye {
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.5;
+    margin-top: 0.5rem;
+  }
 </style>
 </head>
 <body>
@@ -351,6 +358,7 @@
     </svg>
     <h2>Eyes reset</h2>
     <p>Refreshed and refocused</p>
+    <p class="goodbye">Closing in <span id="closeCountdown">5</span>s — back to work!</p>
   </div>
 
   <div class="subtitle">Claude is working — take a moment 🌿</div>
@@ -426,6 +434,17 @@
     setTimeout(() => {
       ex.style.display = 'none';
       comp.classList.add('show');
+      // Auto-close tab after 5 seconds
+      let closeCount = 5;
+      const closeEl = document.getElementById('closeCountdown');
+      const closeTimer = setInterval(() => {
+        closeCount--;
+        if (closeEl) closeEl.textContent = closeCount;
+        if (closeCount <= 0) {
+          clearInterval(closeTimer);
+          window.close();
+        }
+      }, 1000);
     }, 1000);
   }
 
