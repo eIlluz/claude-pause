@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4-7-8 Breathing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2b685a;
+    --primary-container: #7cb9a8;
+    --primary-fixed: #b0efdd;
+    --surface: #fafaf5;
+    --surface-container-low: #f4f4ef;
+    --on-surface: #1a1c19;
+    --on-surface-variant: #404945;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 85% 65% at 35% 40%, rgba(176,239,221,0.22), transparent),
+      radial-gradient(ellipse 60% 45% at 70% 60%, rgba(124,185,168,0.15), transparent);
+    animation: driftBg 24s ease-in-out infinite alternate;
+  }
+
+  @keyframes driftBg {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-18px, 12px) scale(1.04); }
+    100% { transform: translate(12px, -8px) scale(1.02); }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .icon-svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.2s forwards;
+  }
+
+  .timing-hint {
+    font-size: 1rem;
+    color: var(--on-surface-variant);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.35s forwards;
+  }
+
+  .breath-container {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.5s forwards;
+  }
+
+  .progress-ring {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring-bg {
+    fill: none;
+    stroke: var(--surface-container-low);
+    stroke-width: 4;
+  }
+
+  .progress-ring-fill {
+    fill: none;
+    stroke: var(--primary-container);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 753.98;
+    stroke-dashoffset: 753.98;
+    transition: stroke-dashoffset 0.1s linear, stroke 0.8s ease;
+  }
+
+  .breath-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: var(--primary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: transform ease-in-out, background-color 0.8s ease;
+  }
+
+  .breath-circle.inhale {
+    transform: scale(1.5);
+    background-color: #c4f0e0;
+    transition-duration: 4s, 0.8s;
+  }
+
+  .breath-circle.hold {
+    transform: scale(1.5);
+    background-color: var(--primary-container);
+    transition-duration: 0.3s, 0.8s;
+  }
+
+  .breath-circle.exhale {
+    transform: scale(1);
+    background-color: #6aab97;
+    transition-duration: 8s, 0.8s;
+  }
+
+  .phase-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+  }
+
+  .countdown {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .cycle-counter {
+    font-size: 1rem;
+    color: var(--on-surface-variant);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.7s forwards;
+  }
+
+  .completion {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  .completion.show { display: flex; opacity: 1; }
+
+  .completion h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .completion p {
+    font-size: 1.1rem;
+    color: var(--on-surface-variant);
+  }
+
+  .subtitle {
+    position: fixed;
+    bottom: 2rem;
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  .intro {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    transition: opacity 1s ease;
+  }
+
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.3s forwards;
+  }
+
+  .intro-label {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--on-surface-variant);
+    letter-spacing: 0.05em;
+  }
+
+  .intro-countdown {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--primary);
+    line-height: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .intro-countdown.tick {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .intro-hint {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary-container);
+    letter-spacing: 0.03em;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="intro" id="intro">
+    <div class="intro-content">
+      <div class="intro-label">Take a moment</div>
+      <div class="intro-countdown" id="introCountdown">3</div>
+      <div class="intro-hint">Breathe in slowly...</div>
+    </div>
+  </div>
+
+  <div class="content" id="exercise">
+    <svg class="icon-svg" viewBox="0 0 80 80" fill="none">
+      <path d="M20 55 Q20 35 40 25 Q60 35 60 55" stroke="#2b685a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="40" cy="22" r="6" fill="#b0efdd" stroke="#2b685a" stroke-width="2"/>
+      <path d="M32 42 h16" stroke="#7cb9a8" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <path d="M35 48 h10" stroke="#7cb9a8" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+      <text x="17" y="68" font-family="Manrope, sans-serif" font-size="10" font-weight="600" fill="#2b685a">4</text>
+      <text x="37" y="68" font-family="Manrope, sans-serif" font-size="10" font-weight="600" fill="#2b685a">7</text>
+      <text x="57" y="68" font-family="Manrope, sans-serif" font-size="10" font-weight="600" fill="#2b685a">8</text>
+    </svg>
+
+    <h1>4-7-8 Breathing</h1>
+
+    <span class="timing-hint">Inhale 4s &middot; Hold 7s &middot; Exhale 8s</span>
+
+    <div class="breath-container">
+      <svg class="progress-ring" viewBox="0 0 260 260">
+        <circle class="progress-ring-bg" cx="130" cy="130" r="120"/>
+        <circle class="progress-ring-fill" id="ringFill" cx="130" cy="130" r="120"/>
+      </svg>
+      <div class="breath-circle" id="breathCircle">
+        <span class="phase-label" id="phaseLabel">Get ready</span>
+        <span class="countdown" id="countdown"></span>
+      </div>
+    </div>
+
+    <div class="cycle-counter" id="cycleCounter">Cycle 1 of 3</div>
+  </div>
+
+  <div class="completion" id="completion">
+    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="30" fill="#b0efdd" opacity="0.5"/>
+      <path d="M28 40 l8 8 l16-16" stroke="#2b685a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h2>Deeply relaxed</h2>
+    <p>Your nervous system is at ease</p>
+  </div>
+
+  <div class="subtitle">Claude is working — take a moment 🌿</div>
+
+<script>
+  const phases = [
+    { name: 'Inhale', cls: 'inhale', duration: 4 },
+    { name: 'Hold', cls: 'hold', duration: 7 },
+    { name: 'Exhale', cls: 'exhale', duration: 8 }
+  ];
+
+  const totalCycles = 3;
+  let currentCycle = 0;
+  let currentPhase = 0;
+  let timer = null;
+
+  const circle = document.getElementById('breathCircle');
+  const label = document.getElementById('phaseLabel');
+  const countdownEl = document.getElementById('countdown');
+  const cycleCounter = document.getElementById('cycleCounter');
+  const ringFill = document.getElementById('ringFill');
+  const circumference = 2 * Math.PI * 120;
+
+  ringFill.style.strokeDasharray = circumference;
+  ringFill.style.strokeDashoffset = circumference;
+
+  function setProgress(frac) {
+    ringFill.style.strokeDashoffset = circumference * (1 - frac);
+  }
+
+  function startPhase() {
+    const phase = phases[currentPhase];
+    label.textContent = phase.name;
+    const totalMs = phase.duration * 1000;
+    let secondsLeft = phase.duration;
+    countdownEl.textContent = secondsLeft;
+
+    circle.className = 'breath-circle ' + phase.cls;
+
+    if (phase.cls === 'inhale') ringFill.style.stroke = '#b0efdd';
+    else if (phase.cls === 'hold') ringFill.style.stroke = '#7cb9a8';
+    else ringFill.style.stroke = '#5a9e8a';
+
+    setProgress(0);
+
+    let elapsed = 0;
+    const tick = 50;
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed += tick;
+      setProgress(elapsed / totalMs);
+
+      const sec = Math.ceil((totalMs - elapsed) / 1000);
+      if (sec !== secondsLeft && sec >= 0) {
+        secondsLeft = sec;
+        countdownEl.textContent = sec > 0 ? sec : '';
+      }
+
+      if (elapsed >= totalMs) {
+        clearInterval(timer);
+        setProgress(1);
+        nextPhase();
+      }
+    }, tick);
+  }
+
+  function nextPhase() {
+    currentPhase++;
+    if (currentPhase >= phases.length) {
+      currentPhase = 0;
+      currentCycle++;
+      if (currentCycle >= totalCycles) {
+        showCompletion();
+        return;
+      }
+      cycleCounter.textContent = `Cycle ${currentCycle + 1} of ${totalCycles}`;
+    }
+    startPhase();
+  }
+
+  function showCompletion() {
+    const ex = document.getElementById('exercise');
+    const comp = document.getElementById('completion');
+    ex.style.transition = 'opacity 1s ease';
+    ex.style.opacity = '0';
+    setTimeout(() => {
+      ex.style.display = 'none';
+      comp.classList.add('show');
+    }, 1000);
+  }
+
+  // Relaxing intro countdown
+  (function introCountdown() {
+    const introEl = document.getElementById('intro');
+    const countEl = document.getElementById('introCountdown');
+    let count = 3;
+
+    function tick() {
+      if (count <= 0) {
+        // Fade out intro
+        introEl.style.opacity = '0';
+        setTimeout(() => {
+          introEl.style.display = 'none';
+          startPhase();
+        }, 1000);
+        return;
+      }
+
+      countEl.classList.add('tick');
+      setTimeout(() => {
+        count--;
+        countEl.textContent = count > 0 ? count : '';
+        countEl.classList.remove('tick');
+        setTimeout(tick, 1000);
+      }, 400);
+    }
+
+    // Wait for page to settle, then start countdown
+    setTimeout(tick, 1200);
+  })();
+</script>
+</body>
+</html>

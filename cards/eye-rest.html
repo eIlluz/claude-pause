@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20-20-20 Eye Rest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2b685a;
+    --primary-container: #7cb9a8;
+    --primary-fixed: #b0efdd;
+    --surface: #fafaf5;
+    --surface-container-low: #f4f4ef;
+    --on-surface: #1a1c19;
+    --on-surface-variant: #404945;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(176,239,221,0.2), transparent);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .icon-svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.2s forwards;
+  }
+
+  .rule-description {
+    font-size: 1.1rem;
+    color: var(--on-surface-variant);
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.35s forwards;
+  }
+
+  .twenties {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.5s forwards;
+  }
+
+  .twenty-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .twenty-number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--primary);
+    transition: all 0.3s ease;
+    line-height: 1;
+  }
+
+  .twenty-number.active {
+    color: var(--primary);
+    transform: scale(1.1);
+  }
+
+  .twenty-number.dim {
+    color: var(--primary-container);
+    opacity: 0.5;
+  }
+
+  .twenty-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .look-away-cue {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-fixed);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.6s forwards;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .look-away-cue::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--primary-fixed);
+    animation: expandRing 3s ease-in-out infinite;
+  }
+
+  @keyframes expandRing {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  .look-away-cue svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .separator {
+    width: 2px;
+    height: 50px;
+    background: var(--primary-fixed);
+    opacity: 0.5;
+    align-self: center;
+  }
+
+  .completion {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  .completion.show { display: flex; opacity: 1; }
+
+  .completion h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .completion p {
+    font-size: 1.1rem;
+    color: var(--on-surface-variant);
+  }
+
+  .subtitle {
+    position: fixed;
+    bottom: 2rem;
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  .intro {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    transition: opacity 1s ease;
+  }
+
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.3s forwards;
+  }
+
+  .intro-label {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--on-surface-variant);
+    letter-spacing: 0.05em;
+  }
+
+  .intro-countdown {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--primary);
+    line-height: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .intro-countdown.tick {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .intro-hint {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary-container);
+    letter-spacing: 0.03em;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="intro" id="intro">
+    <div class="intro-content">
+      <div class="intro-label">Take a moment</div>
+      <div class="intro-countdown" id="introCountdown">3</div>
+      <div class="intro-hint">Breathe in slowly...</div>
+    </div>
+  </div>
+
+  <div class="content" id="exercise">
+    <svg class="icon-svg" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="40" rx="28" ry="18" stroke="#2b685a" stroke-width="2.5" fill="none"/>
+      <circle cx="40" cy="40" r="9" fill="#b0efdd" stroke="#2b685a" stroke-width="2"/>
+      <circle cx="40" cy="40" r="4" fill="#2b685a"/>
+      <path d="M8 40 q10-20 32-20 M72 40 q-10-20-32-20" stroke="#7cb9a8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <h1>20-20-20 Eye Rest</h1>
+
+    <p class="rule-description">Look at something 20 feet away for 20 seconds</p>
+
+    <div class="twenties">
+      <div class="twenty-item">
+        <span class="twenty-number dim" id="num1">20</span>
+        <span class="twenty-label">feet away</span>
+      </div>
+      <div class="separator"></div>
+      <div class="twenty-item">
+        <span class="twenty-number active" id="num2">20</span>
+        <span class="twenty-label">seconds</span>
+      </div>
+      <div class="separator"></div>
+      <div class="twenty-item">
+        <span class="twenty-number dim" id="num3">20</span>
+        <span class="twenty-label">minutes rule</span>
+      </div>
+    </div>
+
+    <div class="look-away-cue">
+      <svg viewBox="0 0 50 50" fill="none">
+        <rect x="5" y="10" width="40" height="30" rx="3" stroke="#2b685a" stroke-width="2" fill="none"/>
+        <line x1="5" y1="25" x2="45" y2="25" stroke="#b0efdd" stroke-width="1"/>
+        <circle cx="30" cy="20" r="4" fill="#b0efdd" opacity="0.7"/>
+        <path d="M10 35 l8-8 l6 4 l8-10 l8 10" stroke="#7cb9a8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="completion" id="completion">
+    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="30" fill="#b0efdd" opacity="0.5"/>
+      <path d="M28 40 l8 8 l16-16" stroke="#2b685a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h2>Eyes refreshed</h2>
+    <p>Your eyes feel rested and ready</p>
+  </div>
+
+  <div class="subtitle">Claude is working — take a moment 🌿</div>
+
+<script>
+  const num2 = document.getElementById('num2');
+  let seconds = 20;
+
+  function startCountdown() {
+    num2.textContent = seconds;
+
+    const interval = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        num2.textContent = '0';
+        setTimeout(showCompletion, 800);
+        return;
+      }
+      num2.textContent = seconds;
+    }, 1000);
+  }
+
+  function showCompletion() {
+    const ex = document.getElementById('exercise');
+    const comp = document.getElementById('completion');
+    ex.style.transition = 'opacity 1s ease';
+    ex.style.opacity = '0';
+    setTimeout(() => {
+      ex.style.display = 'none';
+      comp.classList.add('show');
+    }, 1000);
+  }
+
+  // Relaxing intro countdown
+  (function introCountdown() {
+    const introEl = document.getElementById('intro');
+    const countEl = document.getElementById('introCountdown');
+    let count = 3;
+
+    function tick() {
+      if (count <= 0) {
+        // Fade out intro
+        introEl.style.opacity = '0';
+        setTimeout(() => {
+          introEl.style.display = 'none';
+          startCountdown();
+        }, 1000);
+        return;
+      }
+
+      countEl.classList.add('tick');
+      setTimeout(() => {
+        count--;
+        countEl.textContent = count > 0 ? count : '';
+        countEl.classList.remove('tick');
+        setTimeout(tick, 1000);
+      }, 400);
+    }
+
+    // Wait for page to settle, then start countdown
+    setTimeout(tick, 1200);
+  })();
+</script>
+</body>
+</html>
