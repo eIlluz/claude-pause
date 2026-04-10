@@ -1,0 +1,26 @@
+{
+  "cooldown_minutes": 60,
+  "open_browser_card": true,
+  "hooks": {
+    "bash": true,
+    "agent": true,
+    "mcp": true
+  },
+  "slow_keywords": [
+    "install", "build", "test", "pytest", "jest", "vitest",
+    "cargo", "make", "cmake", "docker", "compose", "migrate",
+    "seed", "deploy", "compile", "bundle", "lint", "typecheck",
+    "audit", "bench", "download", "clone", "pull", "push",
+    "run dev", "run start", "run build"
+  ],
+  "prompts": [
+    { "slug": "box-breathing", "title": "Box Breathing", "message": "Inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat 3 times." },
+    { "slug": "neck-stretch", "title": "Neck Stretch", "message": "Slowly tilt your head to each side, holding 15 seconds per side." },
+    { "slug": "eye-rest", "title": "20-20-20 Eye Rest", "message": "Look at something 20 feet away for 20 seconds." },
+    { "slug": "posture-check", "title": "Posture Check", "message": "Sit back, feet flat, shoulders relaxed, screen at eye level." },
+    { "slug": "breathing-478", "title": "4-7-8 Breathing", "message": "Inhale 4s, hold 7s, exhale 8s. Repeat 3 times." },
+    { "slug": "shoulder-roll", "title": "Shoulder Roll", "message": "Roll shoulders forward 5x, then backward 5x. Release tension." },
+    { "slug": "blink-reset", "title": "Blink Reset", "message": "Close your eyes gently for 10 seconds. Blink rapidly 10 times." },
+    { "slug": "spine-stretch", "title": "Spine Stretch", "message": "Stand up, reach overhead, then slowly fold forward. Hold 15s." }
+  ]
+}
