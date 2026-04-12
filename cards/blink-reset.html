@@ -348,6 +348,19 @@
   .skip-btn:hover {
     opacity: 0.8;
   }
+
+  .progress-link {
+    font-size: 0.85rem;
+    color: var(--primary);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    margin-top: 0.25rem;
+  }
+  .progress-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -398,6 +411,7 @@
     <h2>Eyes reset</h2>
     <p>Refreshed and refocused</p>
     <p class="goodbye">Closing in <span id="closeCountdown">5</span>s — back to work!</p>
+    <a class="progress-link" id="progressLink" href="#">View my progress</a>
   </div>
 
   <div class="subtitle">Claude is working — take a moment 🌿</div>
@@ -503,6 +517,14 @@
           setTimeout(() => window.close(), 1000);
         }
       }, 1000);
+
+      document.getElementById('progressLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        clearInterval(closeTimer);
+        const goodbye = document.querySelector('.goodbye');
+        if (goodbye) goodbye.textContent = 'Auto-close paused';
+        window.location.href = 'dashboard.html';
+      });
     }, 1000);
   }
 
