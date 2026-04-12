@@ -149,6 +149,22 @@ else
   osascript -e "display notification \"$message\" with title \"$title\" subtitle \"Claude is working — take a moment\"" &>/dev/null || true
 fi
 
+# Pre-generate dashboard-live.html so the progress link works from cards
+DASHBOARD_TEMPLATE="$CARDS_DIR/dashboard.html"
+DASHBOARD_LIVE="$CARDS_DIR/dashboard-live.html"
+if [[ -f "$DASHBOARD_TEMPLATE" && -f "$HISTORY_FILE" ]]; then
+  /usr/bin/python3 -c "
+import sys
+with open('$HISTORY_FILE') as f:
+    history = f.read().strip()
+with open('$DASHBOARD_TEMPLATE') as f:
+    html = f.read()
+html = html.replace('</head>', '<script>window.__WELLNESS_HISTORY__ = ' + history + ';</script></head>', 1)
+with open('$DASHBOARD_LIVE', 'w') as f:
+    f.write(html)
+" 2>/dev/null || true
+fi
+
 # Open browser card
 if [[ "$open_browser" == "true" ]]; then
   card_file="$CARDS_DIR/$slug.html"
