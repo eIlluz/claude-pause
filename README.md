@@ -27,8 +27,17 @@ When Claude starts a slow build, test run, or agent task, claude-pause opens a f
 
 ## Install
 
+**With Homebrew (macOS):**
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-pause.git
+brew tap eIlluz/claude-pause
+brew install claude-pause
+```
+
+**Or manually:**
+
+```bash
+git clone https://github.com/eIlluz/claude-pause.git
 cd claude-pause
 bash install.sh
 ```
