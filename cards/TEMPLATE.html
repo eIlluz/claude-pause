@@ -1,0 +1,372 @@
+<!--
+  claude-pause Card Template
+  ==========================
+  Copy this file, rename it to your-exercise.html, and customize.
+  Then add a matching entry to wellness.config.json:
+
+  { "slug": "your-exercise", "title": "Your Exercise", "message": "Short description for notification." }
+
+  Design tokens (change these in :root to retheme):
+    --primary: #2b685a     (accent color)
+    --primary-container: #7cb9a8  (lighter accent)
+    --surface: #fafaf5     (background)
+    --on-surface: #1a1c19  (text color)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Exercise Name</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2b685a;
+    --primary-container: #7cb9a8;
+    --primary-fixed: #b0efdd;
+    --surface: #fafaf5;
+    --surface-container-low: #f4f4ef;
+    --surface-container: #eeeee9;
+    --on-surface: #1a1c19;
+    --on-surface-variant: #404945;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: #7cb9a8;
+      --primary-container: #2b685a;
+      --primary-fixed: #1a4a3e;
+      --surface: #1a1c19;
+      --surface-container-low: #222420;
+      --surface-container: #2a2c28;
+      --on-surface: #e3e3de;
+      --on-surface-variant: #bfc9c4;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bg-glow {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 40%, rgba(176,239,221,0.25), transparent),
+      radial-gradient(ellipse 70% 50% at 70% 60%, rgba(124,185,168,0.15), transparent);
+    animation: driftBg 20s ease-in-out infinite alternate;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .bg-glow {
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 40%, rgba(43,104,90,0.15), transparent),
+        radial-gradient(ellipse 70% 50% at 70% 60%, rgba(124,185,168,0.08), transparent);
+    }
+  }
+
+  @keyframes driftBg {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, 15px) scale(1.05); }
+    100% { transform: translate(15px, -10px) scale(1.02); }
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  .icon-svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    opacity: 0;
+    animation: fadeIn 1s ease 0.2s forwards;
+  }
+
+  .instruction {
+    font-size: 1.1rem;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.4s forwards;
+  }
+
+  /* === YOUR EXERCISE UI GOES HERE === */
+  .exercise-area {
+    opacity: 0;
+    animation: fadeIn 1s ease 0.6s forwards;
+  }
+
+  /* Completion screen */
+  .completion {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  .completion.show { display: flex; opacity: 1; }
+
+  .completion h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .completion p {
+    font-size: 1.1rem;
+    color: var(--on-surface-variant);
+  }
+
+  .goodbye {
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.5;
+    margin-top: 0.5rem;
+  }
+
+  /* Skip button */
+  .skip-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    background: none;
+    border: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
+  }
+  .skip-btn:hover { opacity: 0.8; }
+
+  /* Intro countdown */
+  .intro {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    transition: opacity 1s ease;
+  }
+
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.3s forwards;
+  }
+
+  .intro-label {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--on-surface-variant);
+  }
+
+  .intro-countdown {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--primary);
+    line-height: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .intro-countdown.tick {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .intro-hint {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary-container);
+  }
+
+  .subtitle {
+    position: fixed;
+    bottom: 2rem;
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <button class="skip-btn" onclick="window.close()" title="Skip this break">not now</button>
+
+  <div class="intro" id="intro">
+    <div class="intro-content">
+      <div class="intro-label">Take a moment</div>
+      <div class="intro-countdown" id="introCountdown">3</div>
+      <div class="intro-hint">Breathe in slowly...</div>
+    </div>
+  </div>
+
+  <div class="content" id="exercise">
+    <!-- Replace this icon with your own SVG -->
+    <svg class="icon-svg" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="30" stroke="var(--primary)" stroke-width="2.5" fill="none" opacity="0.3"/>
+      <circle cx="40" cy="40" r="10" fill="var(--primary-fixed)" opacity="0.7"/>
+    </svg>
+
+    <h1>Your Exercise</h1>
+
+    <p class="instruction">
+      Describe what the user should do in 1-2 sentences.
+    </p>
+
+    <div class="exercise-area">
+      <!-- Your interactive exercise UI goes here.
+           Use CSS animations, JS timers, or whatever you need.
+           When the exercise is done, call showCompletion(). -->
+    </div>
+  </div>
+
+  <div class="completion" id="completion">
+    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="30" fill="var(--primary-fixed)" opacity="0.5"/>
+      <path d="M28 40 l8 8 l16-16" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h2>Well done</h2>
+    <p>Your custom completion message here</p>
+    <p class="goodbye">Closing in <span id="closeCountdown">5</span>s — back to work!</p>
+  </div>
+
+  <div class="subtitle">Claude is working — take a moment</div>
+
+<script>
+  // --- Chime sound (plays when exercise starts) ---
+  function playChime() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(528, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(396, ctx.currentTime + 0.8);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+      osc.type = 'sine';
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.2);
+    } catch(e) {}
+  }
+
+  // --- Completion with auto-close ---
+  function showCompletion() {
+    const ex = document.getElementById('exercise');
+    const comp = document.getElementById('completion');
+    ex.style.transition = 'opacity 1s ease';
+    ex.style.opacity = '0';
+    setTimeout(() => {
+      ex.style.display = 'none';
+      comp.classList.add('show');
+      // Auto-close tab after 5 seconds
+      let closeCount = 5;
+      const closeEl = document.getElementById('closeCountdown');
+      const closeTimer = setInterval(() => {
+        closeCount--;
+        if (closeEl) closeEl.textContent = closeCount;
+        if (closeCount <= 0) {
+          clearInterval(closeTimer);
+          document.body.style.transition = 'opacity 1s ease';
+          document.body.style.opacity = '0';
+          setTimeout(() => window.close(), 1000);
+        }
+      }, 1000);
+    }, 1000);
+  }
+
+  // --- Your exercise logic ---
+  function startExercise() {
+    // Replace this with your exercise logic.
+    // When the exercise finishes, call showCompletion().
+    //
+    // Example: a simple 10-second timer
+    let seconds = 10;
+    const area = document.querySelector('.exercise-area');
+    area.innerHTML = '<div style="font-size:3rem;font-weight:700;color:var(--primary)">' + seconds + '</div>';
+
+    const timer = setInterval(() => {
+      seconds--;
+      area.innerHTML = '<div style="font-size:3rem;font-weight:700;color:var(--primary)">' + (seconds > 0 ? seconds : '') + '</div>';
+      if (seconds <= 0) {
+        clearInterval(timer);
+        showCompletion();
+      }
+    }, 1000);
+  }
+
+  // --- Intro countdown (don't change this) ---
+  (function introCountdown() {
+    const introEl = document.getElementById('intro');
+    const countEl = document.getElementById('introCountdown');
+    let count = 3;
+
+    function tick() {
+      if (count <= 0) {
+        introEl.style.opacity = '0';
+        setTimeout(() => {
+          introEl.style.display = 'none';
+          playChime();
+          startExercise();
+        }, 1000);
+        return;
+      }
+
+      countEl.classList.add('tick');
+      setTimeout(() => {
+        count--;
+        countEl.textContent = count > 0 ? count : '';
+        countEl.classList.remove('tick');
+        setTimeout(tick, 1000);
+      }, 400);
+    }
+
+    setTimeout(tick, 1200);
+  })();
+</script>
+</body>
+</html>
