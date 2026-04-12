@@ -775,6 +775,12 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
   document.getElementById('landing').style.display = '';
   fileInput.value = '';
 });
+
+// Auto-load if history was injected by dashboard.sh
+if (window.__WELLNESS_HISTORY__ && Array.isArray(window.__WELLNESS_HISTORY__) && window.__WELLNESS_HISTORY__.length > 0) {
+  document.getElementById('landing').style.display = 'none';
+  renderDashboard(window.__WELLNESS_HISTORY__);
+}
 </script>
 </body>
 </html>
