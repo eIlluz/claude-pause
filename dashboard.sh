@@ -18,7 +18,17 @@ if [[ ! -f "$TEMPLATE" ]]; then
 fi
 
 # Inject history data directly into a copy of the dashboard
-# Replace the closing </head> with an inline script that sets the data
-cat "$TEMPLATE" | sed "s|</head>|<script>window.__WELLNESS_HISTORY__ = $HISTORY;</script></head>|" > "$DASHBOARD_FILE"
+/usr/bin/python3 -c "
+import sys
+history = sys.argv[1]
+template = sys.argv[2]
+output = sys.argv[3]
+with open(template) as f:
+    html = f.read()
+inject = '<script>window.__WELLNESS_HISTORY__ = ' + history + ';</script></head>'
+html = html.replace('</head>', inject, 1)
+with open(output, 'w') as f:
+    f.write(html)
+" "$HISTORY" "$TEMPLATE" "$DASHBOARD_FILE"
 
 open "$DASHBOARD_FILE"
