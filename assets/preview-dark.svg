@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" font-family="Manrope, sans-serif">
+  <!-- Browser window frame (dark) -->
+  <rect x="0" y="0" width="400" height="300" rx="16" fill="#1a1c19"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="400" height="36" rx="16" fill="#242620"/>
+  <rect x="0" y="20" width="400" height="16" fill="#242620"/>
+  <!-- Traffic lights -->
+  <circle cx="20" cy="18" r="5" fill="#ff5f57"/>
+  <circle cx="36" cy="18" r="5" fill="#febc2e"/>
+  <circle cx="52" cy="18" r="5" fill="#28c840"/>
+  <!-- Address bar -->
+  <rect x="100" y="10" width="200" height="16" rx="8" fill="#363830"/>
+
+  <!-- Card content area (dark) -->
+  <!-- Title -->
+  <text x="200" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#e3e3de">Box Breathing</text>
+  <text x="200" y="90" text-anchor="middle" font-size="11" fill="#7cb9a8">4 · 4 · 4 · 4</text>
+
+  <!-- Progress ring (outer) -->
+  <circle cx="200" cy="178" r="72" fill="none" stroke="#2b3d38" stroke-width="6"/>
+  <!-- Progress ring (filled arc, ~270deg) -->
+  <circle cx="200" cy="178" r="72" fill="none" stroke="#7cb9a8" stroke-width="6"
+    stroke-dasharray="339.29 452.39" stroke-dashoffset="113.1"
+    stroke-linecap="round" transform="rotate(-90 200 178)"/>
+
+  <!-- Inner circle -->
+  <circle cx="200" cy="178" r="54" fill="#242620"/>
+
+  <!-- Inhale text -->
+  <text x="200" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#7cb9a8">Inhale</text>
+  <text x="200" y="190" text-anchor="middle" font-size="24" font-weight="800" fill="#e3e3de">4</text>
+
+  <!-- Bottom label -->
+  <text x="200" y="264" text-anchor="middle" font-size="11" fill="#7cb9a8">Breathe in slowly through your nose</text>
+
+  <!-- Skip button -->
+  <text x="370" y="58" text-anchor="end" font-size="11" fill="#7cb9a8">not now</text>
+
+  <!-- Dark mode badge -->
+  <rect x="155" y="272" width="90" height="20" rx="10" fill="#242620"/>
+  <text x="200" y="286" text-anchor="middle" font-size="10" fill="#7cb9a8">dark mode</text>
+</svg>

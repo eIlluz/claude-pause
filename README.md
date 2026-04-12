@@ -6,6 +6,19 @@ Wellness hooks for Claude Code. Get guided breathing, stretching, and eye-care e
 
 ---
 
+## Preview
+
+<p align="center">
+  <img src="assets/preview-breathing.svg" width="400" alt="Box Breathing exercise">
+  <img src="assets/preview-stretch.svg" width="400" alt="Neck Stretch exercise">
+</p>
+<p align="center">
+  <img src="assets/preview-eyes.svg" width="400" alt="20-20-20 Eye Rest">
+  <img src="assets/preview-dark.svg" width="400" alt="Dark mode support">
+</p>
+
+---
+
 ## What happens
 
 When Claude starts a slow build, test run, or agent task, claude-pause opens a full-page interactive wellness guide in your browser. It cycles through 8 exercises in order, with a configurable cooldown between breaks (default: 60 minutes) — so you're never interrupted more than necessary.
@@ -47,6 +60,42 @@ Config lives at `~/.claude/scripts/wellness.config.json`:
 | `hooks.mcp` | Enable/disable MCP call trigger |
 | `slow_keywords` | List of command substrings that count as "slow" |
 | `prompts` | Add, remove, or reorder the exercise sequence |
+
+---
+
+## Dark mode
+
+Cards automatically switch to a dark, calming palette when your system is set to dark mode. The dark theme uses a deep forest background (`#1a1c19`) with muted teal accents — easy on the eyes whether you're working in a bright office or a dim room late at night.
+
+---
+
+## Smart cooldown
+
+The cooldown adapts to how long you've been in a session:
+
+- **First 30 minutes** — no breaks trigger, so you can settle in without interruption.
+- **After 30 minutes** — normal cooldown applies (default: 60 minutes between breaks).
+- **After 2+ hours** — break frequency doubles, nudging you to move more during long sessions.
+
+Adjust the base cooldown in `~/.claude/scripts/wellness.config.json` via the `cooldown_minutes` field.
+
+---
+
+## History
+
+Every exercise that completes is logged to `~/.claude/scripts/.wellness_history.json`. Each entry records the timestamp, exercise name, and trigger type (bash / agent / mcp), so you can track your break habits over time.
+
+---
+
+## Custom exercises
+
+Add your own exercises by copying `cards/TEMPLATE.html` and filling in the placeholders. Then register the new card in `~/.claude/scripts/wellness.config.json` under the `prompts` array. The template includes all the standard UI (skip button, dark-mode support, completion sound) wired up and ready to go.
+
+---
+
+## Skip
+
+Every card has a **not now** button in the top-right corner. Clicking it closes the card immediately and resets the cooldown timer, so you won't be prompted again until the full cooldown has elapsed.
 
 ---
 

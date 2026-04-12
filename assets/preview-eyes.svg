@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" font-family="Manrope, sans-serif">
+  <!-- Browser window frame -->
+  <rect x="0" y="0" width="400" height="300" rx="16" fill="#fafaf5"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="400" height="36" rx="16" fill="#e8e8e2"/>
+  <rect x="0" y="20" width="400" height="16" fill="#e8e8e2"/>
+  <!-- Traffic lights -->
+  <circle cx="20" cy="18" r="5" fill="#ff5f57"/>
+  <circle cx="36" cy="18" r="5" fill="#febc2e"/>
+  <circle cx="52" cy="18" r="5" fill="#28c840"/>
+  <!-- Address bar -->
+  <rect x="100" y="10" width="200" height="16" rx="8" fill="#d4d4ce"/>
+
+  <!-- Card content area -->
+  <!-- Title -->
+  <text x="200" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#2b685a">20-20-20 Eye Rest</text>
+  <text x="200" y="90" text-anchor="middle" font-size="11" fill="#7cb9a8">Give your eyes a break</text>
+
+  <!-- Three boxes for 20-20-20 -->
+  <!-- Box 1: 20 feet -->
+  <rect x="42" y="110" width="96" height="96" rx="14" fill="#b0efdd"/>
+  <text x="90" y="162" text-anchor="middle" font-size="36" font-weight="800" fill="#2b685a">20</text>
+  <text x="90" y="194" text-anchor="middle" font-size="11" font-weight="600" fill="#2b685a">feet away</text>
+
+  <!-- Box 2: 20 seconds -->
+  <rect x="152" y="110" width="96" height="96" rx="14" fill="#7cb9a8"/>
+  <text x="200" y="162" text-anchor="middle" font-size="36" font-weight="800" fill="#fafaf5">20</text>
+  <text x="200" y="194" text-anchor="middle" font-size="11" font-weight="600" fill="#fafaf5">seconds</text>
+
+  <!-- Box 3: 20 minutes -->
+  <rect x="262" y="110" width="96" height="96" rx="14" fill="#b0efdd"/>
+  <text x="310" y="162" text-anchor="middle" font-size="36" font-weight="800" fill="#2b685a">20</text>
+  <text x="310" y="194" text-anchor="middle" font-size="11" font-weight="600" fill="#2b685a">minutes</text>
+
+  <!-- Connector lines -->
+  <line x1="138" y1="158" x2="152" y2="158" stroke="#2b685a" stroke-width="2" stroke-dasharray="3 3"/>
+  <line x1="248" y1="158" x2="262" y2="158" stroke="#2b685a" stroke-width="2" stroke-dasharray="3 3"/>
+
+  <!-- Bottom instruction -->
+  <text x="200" y="236" text-anchor="middle" font-size="11" fill="#7cb9a8">Look at something 20 feet away</text>
+  <text x="200" y="252" text-anchor="middle" font-size="11" fill="#7cb9a8">for 20 seconds, every 20 minutes</text>
+
+  <!-- Skip button -->
+  <text x="370" y="58" text-anchor="end" font-size="11" fill="#7cb9a8">not now</text>
+</svg>
