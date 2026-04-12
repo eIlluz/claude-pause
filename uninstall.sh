@@ -24,6 +24,8 @@ rm -f "$SCRIPTS_DIR/.wellness_index"
 rm -f "$SCRIPTS_DIR/.wellness_last_fired"
 rm -f "$SCRIPTS_DIR/.wellness_message"
 rm -f "$SCRIPTS_DIR/.wellness_title"
+rm -f "$SCRIPTS_DIR/.wellness_session_start"
+rm -f "$SCRIPTS_DIR/.wellness_history.json"
 echo "  Removed state files"
 
 # 3. Remove hooks from settings.json

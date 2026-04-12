@@ -7,6 +7,8 @@ INDEX_FILE="$SCRIPTS_DIR/.wellness_index"
 LAST_FIRED="$SCRIPTS_DIR/.wellness_last_fired"
 CARDS_DIR="$SCRIPTS_DIR/cards"
 NOTIFIER_APP="$SCRIPTS_DIR/WellnessNotifier.app"
+HISTORY_FILE="$SCRIPTS_DIR/.wellness_history.json"
+SESSION_FILE="$SCRIPTS_DIR/.wellness_session_start"
 
 # Bail if no config
 if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -27,19 +29,47 @@ import sys, json, os, time
 config_path = '$CONFIG_FILE'
 index_path = '$INDEX_FILE'
 last_fired_path = '$LAST_FIRED'
+session_path = '$SESSION_FILE'
 check_mode = '${1:-}' == 'check'
 stdin_data = '''$STDIN_DATA'''
 
 with open(config_path) as f:
     config = json.load(f)
 
-cooldown = config.get('cooldown_minutes', 60) * 60
+# Smart cooldown: scale based on session length
+# < 30 min session: no breaks (you just started)
+# 30-60 min: use configured cooldown
+# 2+ hours: cooldown halved (you need more breaks)
+base_cooldown = config.get('cooldown_minutes', 60) * 60
+
+# Track session start
+now = time.time()
+if not os.path.exists(session_path):
+    with open(session_path, 'w') as f:
+        f.write(str(int(now)))
+
+session_start = now
+if os.path.exists(session_path):
+    with open(session_path) as f:
+        try:
+            session_start = int(f.read().strip())
+        except ValueError:
+            session_start = now
+
+session_minutes = (now - session_start) / 60
+
+if session_minutes < 30:
+    sys.exit(1)  # Too early in session
+elif session_minutes > 120:
+    cooldown = base_cooldown // 2  # More frequent after 2 hours
+else:
+    cooldown = base_cooldown
 
 # Check cooldown
 if os.path.exists(last_fired_path):
     with open(last_fired_path) as f:
         last = int(f.read().strip())
-    if time.time() - last < cooldown:
+    if now - last < cooldown:
         sys.exit(1)
 
 # Check slow keywords in check mode
@@ -87,6 +117,28 @@ echo "$next_idx" > "$INDEX_FILE"
 
 # Record fire time
 date +%s > "$LAST_FIRED"
+
+# Log to history
+/usr/bin/python3 -c "
+import json, os, time
+history_path = '$HISTORY_FILE'
+history = []
+if os.path.exists(history_path):
+    try:
+        with open(history_path) as f:
+            history = json.load(f)
+    except (json.JSONDecodeError, ValueError):
+        history = []
+history.append({
+    'slug': '$slug',
+    'title': '$title',
+    'timestamp': time.strftime('%Y-%m-%dT%H:%M:%S'),
+    'epoch': int(time.time())
+})
+with open(history_path, 'w') as f:
+    json.dump(history, f, indent=2)
+    f.write('\n')
+" 2>/dev/null || true
 
 # Fire macOS notification
 if [[ -d "$NOTIFIER_APP" ]]; then
