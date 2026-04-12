@@ -18,6 +18,25 @@
     --on-surface-variant: #404945;
   }
 
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: #7cb9a8;
+      --primary-container: #2b685a;
+      --primary-fixed: #1a4a3e;
+      --surface: #1a1c19;
+      --surface-container-low: #222420;
+      --surface-container: #2a2c28;
+      --on-surface: #e3e3de;
+      --on-surface-variant: #bfc9c4;
+      --outline-variant: #404945;
+    }
+    .bg-glow {
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 40%, rgba(43,104,90,0.15), transparent),
+        radial-gradient(ellipse 70% 50% at 70% 60%, rgba(124,185,168,0.08), transparent);
+    }
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -249,10 +268,30 @@
     opacity: 0.5;
     margin-top: 0.5rem;
   }
+
+  .skip-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    background: none;
+    border: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
+  }
+  .skip-btn:hover {
+    opacity: 0.8;
+  }
 </style>
 </head>
 <body>
   <div class="bg-glow"></div>
+  <button class="skip-btn" onclick="window.close()" title="Skip this break">not now</button>
 
   <div class="intro" id="intro">
     <div class="intro-content">
@@ -314,6 +353,23 @@
   <div class="subtitle">Claude is working — take a moment 🌿</div>
 
 <script>
+  function playChime() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(528, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(396, ctx.currentTime + 0.8);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+      osc.type = 'sine';
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.2);
+    } catch(e) {}
+  }
+
   const num2 = document.getElementById('num2');
   let seconds = 20;
 
@@ -348,7 +404,9 @@
         if (closeEl) closeEl.textContent = closeCount;
         if (closeCount <= 0) {
           clearInterval(closeTimer);
-          window.close();
+          document.body.style.transition = 'opacity 1s ease';
+          document.body.style.opacity = '0';
+          setTimeout(() => window.close(), 1000);
         }
       }, 1000);
     }, 1000);
@@ -366,6 +424,7 @@
         introEl.style.opacity = '0';
         setTimeout(() => {
           introEl.style.display = 'none';
+          playChime();
           startCountdown();
         }, 1000);
         return;
